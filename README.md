@@ -54,8 +54,6 @@ For open-source LLMs, we will use `vllm` to accelerate inference. Please add the
 ```bash
 python generate_open.py --model_path ${MODEL} --subject ${SUBJECT} --prompt llama3math --tensor_parallel_size 4
 ```
-where `SYS_PROMPT` is the system prompt, e.g., "Please reason step by step, and put your final answer within \\boxed{}.".
-
 
 
 #### Evaluate
