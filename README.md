@@ -4,7 +4,7 @@
     <img src="./imgs/logo.jpg" alt="Logo" style="height: 3em; display: inline-block; vertical-align: middle;"> <br>UGMathBench
 </h1>
 <p align="center">
-    <a href="https://arxiv.org/abs/2502.00334">
+    <a href="https://arxiv.org/abs/2501.13766">
         <img alt="Static Badge" src="https://img.shields.io/badge/Paper-Arxiv-red">
     </a>
     <a href="https://huggingface.co/datasets/UGMathBench/ugmathbench">
