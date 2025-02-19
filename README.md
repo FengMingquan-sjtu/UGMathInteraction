@@ -1,7 +1,7 @@
 
 
 <h1 align="center">
-    <img src="./imgs/logo.jpg" alt="Logo" style="height: 3em; display: inline-block; vertical-align: middle;"> <br>UGPhysics
+    <img src="./imgs/logo.jpg" alt="Logo" style="height: 3em; display: inline-block; vertical-align: middle;"> <br>UGMathBench
 </h1>
 <p align="center">
     <a href="https://arxiv.org/abs/2502.00334">
