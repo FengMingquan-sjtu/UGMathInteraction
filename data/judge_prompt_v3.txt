@@ -1,0 +1,389 @@
+# CONTEXT #
+I am a teacher, and I have some high-level math problems. I am tasked with evaluating the correctness of a student's answer. 
+Below, I am provided with a problem and a reference answer. Additionally, a student's answer is provided. My job is to assess whether the student's answer captures the same meaning as the reference answer, even when expressed with different wording or format.
+
+# OBJECTIVE #
+I need you to judge whether the student's answer is correct given the ground truth answer.
+
+Your tasks include:
+A. Identify Mathematical or Notational Equivalence: Pay special attention to any LaTeX expressions in both answers. Confirm that the mathematical relationships, variables, and operations conveyed are equivalent.
+B. Provide a Justification: Conclude with a brief explanation as to why you believe the student's output is correct or incorrect, highlighting any key differences in meaning or content.
+
+# STYLE #
+Teaching report.
+
+# TONE #
+Professional, scientific.
+
+# AUDIENCE #
+Students. Enable them to better understand whether the answer they produce is correct.
+
+# RESPONSE: MARKDOWN REPORT #
+## Student Final Answer
+[Extract the student's final answer, which is enclosed in "\\boxed{}".]
+## Symplified Reference Answer
+[Symplify the reference answer]
+## Equivalence Judgement
+[Whether the student's answer share the same meaning with the symplified reference answer. (TRUE or FALSE)]
+## Justification
+[Conclude with a brief explanation as to why you believe the student's answer is correct or incorrect.]
+
+
+# ATTENTION #
+ - The reference answer is ALWAYS correct, but may not in the symplified form. You should first symplify the reference answer and then carefully judge whether the student gives the same answer as the symplified reference answer.
+ - The Equivalence Judgement is only TRUE or FALSE. The answer is FALSE even if the student's final answer almost correct with a minor mistakes. However, for numerical values or coefficients, the relative error within 1e-3 can be ignored.
+ - If there are multiple answers, pay attention to the order of these answers accroding to the prolem. If the order matters for the problem, student final answer that has a different order as the reference answer should be regarded as FALSE.
+ - The answer is contained within the "boxed" section, so you can focus solely on comparing the content in the student's answer box with the reference answer, without needing to consider the intermediate steps.
+ - Add "=== report over ===" at the end of the report.
+
+<example math solution>
+**Question**:
+Suppose that news spreads through a city of fixed size of 400000 people at a time rate proportional to the number of people who have not heard the news. (a.) Formulate a differential equation and initial condition for $y(t)$, the number of people who have heard the news $t$ days after it has happened. No one has heard the news at first, so $y(0)=0$. The "time rate of increase in the number of people who have heard the news is proportional to the number of people who have not heard the news" translates into the differential equation $ \frac{dy}{dt} =k ($ [ANS] $)$, where $k$ is the proportionality constant. (b.) 8 days after a scandal in City Hall was reported, a poll showed that 200000 people have heard the news. Using this information and the differential equation, solve for the number of people who have heard the news after $t$ days. $y(t)=$ [ANS]
+
+**Reference Answer**
+400000-y, 400000*[1-exp(ln(0.5)*t/8)]
+
+**Student Solution**:
+To solve the problem, we'll address each part step by step.
+
+### Part (a)
+
+We are given that the rate at which the number of people who have heard the news increases is proportional to the number of people who have **not** heard the news. 
+
+Let \( y(t) \) be the number of people who have heard the news by time \( t \). The total population of the city is 400,000. Therefore, the number of people who have not heard the news is \( 400000 - y(t) \).
+
+This relationship can be expressed as the differential equation:
+\[
+\frac{dy}{dt} = k \left(400000 - y(t)\right)
+\]
+where \( k \) is the proportionality constant.
+
+### Part (b)
+
+We are provided with the initial condition \( y(0) = 0 \) (no one has heard the news initially) and the condition \( y(8) = 200000 \) (200,000 people have heard the news after 8 days).
+
+Starting with the differential equation:
+\[
+\frac{dy}{dt} = k \left(400000 - y(t)\right)
+\]
+We can separate variables and integrate:
+\[
+\int \frac{1}{400000 - y} \, dy = \int k \, dt
+\]
+\[
+- \ln|400000 - y| = kt + C
+\]
+Exponentiating both sides:
+\[
+400000 - y = C' e^{-kt}
+\]
+Solving for \( y(t) \):
+\[
+y(t) = 400000 - C' e^{-kt}
+\]
+Applying the initial condition \( y(0) = 0 \):
+\[
+0 = 400000 - C' \implies C' = 400000
+\]
+Thus,
+\[
+y(t) = 400000 \left(1 - e^{-kt}\right)
+\]
+Using the condition \( y(8) = 200000 \):
+\[
+200000 = 400000 \left(1 - e^{-8k}\right) \implies e^{-8k} = \frac{1}{2} \implies k = \frac{\ln 2}{8}
+\]
+Substituting \( k \) back into the equation for \( y(t) \):
+\[
+y(t) = 400000 \left(1 - e^{-\frac{\ln 2}{8} t}\right) = 400000 \left(1 - 2^{-t/8}\right)
+\]
+
+The final answers are \boxed{400000 - y(t),\ 400000 \left(1 - e^{ -\frac{\ln 2}{8} t} \right)}.
+
+</example math solution>
+
+## Student Final Answer
+\[
+\boxed{400000 - y(t),\ 400000 \left(1 - e^{ -\frac{\ln 2}{8} t} \right)}
+\]
+
+## Simplified Reference Answer
+\[
+400000 - y(t),\ 400000*[1-\exp(\ln(0.5)*t/8)]
+\]
+
+## Equivalence Judgement
+TRUE
+
+## Justification
+The student's final answer correctly matches the simplified form of the reference answer. The expressions for \( y(t) \) in both answers are essentially equivalent, though written with slight differences in notation:
+
+- The student's answer uses \( e^{-\frac{\ln 2}{8} t} \), which is mathematically equivalent to the reference answer's \( \exp(\ln(0.5) \cdot \frac{t}{8}) \). Both express the same exponential decay, as \( \ln(0.5) \) and \( -\ln 2 \) are interchangeable.
+- The structure of the solution and the use of the constant 400,000 in both answers is identical.
+
+Thus, the student's answer conveys the same meaning as the reference answer, confirming the solution is correct.
+
+=== report over ===
+
+<example math solution>
+**Question**:
+Let $y=-\frac{1}{x^{2}+7}$. Find the values of $x$ for which $y$ is increasing most rapidly or decreasing most rapidly. $x=$ [ANS] is where $y$ is increasing most rapidly. $x=$ [ANS] is where $y$ is decreasing most rapidly.
+
+**Reference Answer**
+sqrt(7/3), -[sqrt(7/3)]
+
+**Student Solution**:
+To determine the values of \( x \) where the function \( y = -\frac{1}{x^{2} + 7} \) is increasing or decreasing most rapidly, we follow these steps:
+
+1. **Find the first derivative \( \frac{dy}{dx} \):**
+   \[
+   y = -\frac{1}{x^{2} + 7}
+   \]
+   \[
+   \frac{dy}{dx} = \frac{2x}{(x^{2} + 7)^2}
+   \]
+
+2. **Determine where \( \frac{dy}{dx} \) is maximized or minimized:**
+   To find the extrema of \( \frac{dy}{dx} \), set its derivative equal to zero.
+   
+   \[
+   \frac{d}{dx}\left(\frac{dy}{dx}\right) = \frac{2(7 - 3x^{2})}{(x^{2} + 7)^3} = 0
+   \]
+   
+   Solving for \( x \):
+   
+   \[
+   7 - 3x^{2} = 0 \quad \Rightarrow \quad x^{2} = \frac{7}{3} \quad \Rightarrow \quad x = \pm \sqrt{\frac{7}{3}} \approx \pm 1.528
+   \]
+
+3. **Interpret the results:**
+   - \( x = 1.528 \) is where \( y \) is **increasing most rapidly**.
+   - \( x = -1.528 \) is where \( y \) is **decreasing most rapidly**.
+
+The final answers are \boxed{1.528, -1.528}.
+
+</example math solution>
+
+## Student Final Answer
+\[
+\boxed{1.528, -1.528}
+\]
+
+## Simplified Reference Answer
+\[
+\sqrt{\frac{7}{3}}, -\sqrt{\frac{7}{3}}
+\]
+
+## Equivalence Judgement
+TRUE
+
+## Justification
+The student's final answer of \( 1.528 \) and \( -1.528 \) corresponds exactly to the values of \( \sqrt{\frac{7}{3}} \) and \( -\sqrt{\frac{7}{3}} \), respectively, when calculated numerically. The numerical approximation is correct, and the underlying mathematical expression is equivalent. 
+
+Therefore, the student has correctly interpreted the reference answer and provided a numerically accurate solution. 
+
+=== report over ===
+
+<example math solution>
+**Question**:
+For values of $y$ near 0, put the following functions in increasing order, by using their Taylor expansions.
+(a) $y^2 e^{-y^2}$ (b) $\ln(1+y^2)$ (c) $1-\cos(y)$ [ANS] $<$ [ANS] $<$ [ANS]
+(Fill in the functions, as appropriate, in the answer blanks.) (Fill in the functions, as appropriate, in the answer blanks.)
+
+**Reference Answer**
+1 - cos(y), y^2*e^{-y^2}, ln(1 + y^2)
+
+**Student Solution**:
+ To determine the increasing order of the functions for values of \( y \) near 0, we can examine their Taylor expansions.
+
+**(a) \( y^2 e^{-y^2} \):**
+\[
+y^2 e^{-y^2} = y^2 \left(1 - y^2 + \frac{y^4}{2} - \frac{y^6}{6} + \dots \right) = y^2 - y^4 + \frac{y^6}{2} - \frac{y^8}{6} + \dots
+\]
+
+**(b) \( \ln(1 + y^2) \):**
+\[
+\ln(1 + y^2) = y^2 - \frac{y^4}{2} + \frac{y^6}{3} - \frac{y^8}{4} + \dots
+\]
+
+**(c) \( 1 - \cos(y) \):**
+\[
+1 - \cos(y) = \frac{y^2}{2} - \frac{y^4}{24} + \frac{y^6}{720} - \dots
+\]
+
+**Comparing the Leading Terms:**
+- \( 1 - \cos(y) \approx \frac{y^2}{2} \)
+- \( \ln(1 + y^2) \approx y^2 \)
+- \( y^2 e^{-y^2} \approx y^2 \)
+
+Since \( \frac{y^2}{2} < y^2 \), and considering the higher-order terms, we have:
+\[
+1 - \cos(y) < \ln(1 + y^2) < y^2 e^{-y^2}
+\]
+
+**Final Ordering:**
+\[
+1 - \cos(y) \quad < \quad \ln(1 + y^2) \quad < \quad y^2 e^{-y^2}
+\]
+
+The final answers are \boxed{1 - \cos(y), \ln(1 + y^2), y^2 e^{-y^2}}.
+
+</example math solution>
+
+## Student Final Answer
+\[
+\boxed{1 - \cos(y), \ln(1 + y^2), y^2 e^{-y^2}}
+\]
+
+## Simplified Reference Answer
+\[
+1 - \cos(y), y^2 e^{-y^2}, \ln(1 + y^2)
+\]
+
+## Equivalence Judgement
+FALSE
+
+## Justification
+The student's final answer does not match the simplified reference answer in terms of the order of the functions. The reference answer lists the functions in the correct increasing order as:
+
+\[
+1 - \cos(y) < y^2 e^{-y^2} < \ln(1 + y^2)
+\]
+
+However, the student's final answer has a different order:
+
+\[
+1 - \cos(y) < \ln(1 + y^2) < y^2 e^{-y^2}
+\]
+
+This change in the order of the functions makes the student's answer incorrect. The student correctly identified the Taylor expansions, but they swapped the second and third functions. This alters the order and leads to an incorrect final answer.
+
+=== report over ===
+
+<example math solution>
+**Question**:
+The area of a wetland drops by $\frac{1}{6}$ every $7$ years. What percent of its total area disappears after $35$ years?
+Percent lost $=$ [ANS] \%
+
+**Reference Answer**
+59.8122
+
+**Student Solution**:
+The area of a wetland drops by $\frac{1}{6}$ every $7$ years. What percent of its total area disappears after $35$ years?
+Percent lost $= 59.88 \%$
+
+The final answer is \boxed{59.88}.
+
+</example math solution>
+
+## Student Final Answer
+\[
+\boxed{59.88}
+\]
+
+## Simplified Reference Answer
+\[
+59.8122
+\]
+
+## Equivalence Judgement
+FALSE
+
+## Justification
+The relative error between the student's answer of 59.88% and the reference answer of 59.8122% is calculated as:
+
+$$
+\frac{59.88 - 59.8122}{59.8122} = 1.133 \times 10^{-3}
+$$
+
+This value exceeds the acceptable tolerance of \( 1 \times 10^{-3} \), meaning the student's answer deviates more than the allowed margin of error. Therefore, the student's answer does not match the reference answer closely enough, and the answer should be judged as incorrect.
+
+=== report over ===
+
+
+<example math solution>
+**Question**:
+Find a solution for $\theta$ in radians. If no solution exists, enter NONE. $ \tan{(\theta-1)}=0.38$ $\theta=$ [ANS]
+(enter your answer accurate to at least four decimal places)
+
+**Reference Answer**
+atan(0.38)+1
+
+**Student Solution**:
+To solve the equation \( \tan{(\theta - 1)} = 0.38 \) for \( \theta \) in radians, follow these steps:
+
+1. **Isolate \(\theta\):**
+   \[
+   \theta - 1 = \arctan{(0.38)}
+   \]
+   \[
+   \theta = 1 + \arctan{(0.38)}
+   \]
+
+2. **Calculate \(\arctan{(0.38)}\):**
+   
+   Using a calculator to find the arctangent of 0.38:
+   \[
+   \arctan{(0.38)} \approx 0.3649 \text{ radians}
+   \]
+
+3. **Find \(\theta\):**
+   \[
+   \theta = 1 + 0.3649 = 1.3649 \text{ radians}
+   \]
+
+Thus, the solution accurate to at least four decimal places is:
+
+\[
+\theta = 1.3649
+\]
+
+The final answer is \boxed{1.3649}.
+
+</example math solution>
+
+## Student Final Answer
+\[
+\boxed{59.88}
+\]
+
+## Simplified Reference Answer
+\[
+59.8122
+\]
+
+## Student Final Answer
+\[
+\boxed{1.3649}
+\]
+
+## Simplified Reference Answer
+\[
+\text{atan}(0.38) + 1
+\]
+
+## Equivalence Judgement
+FALSE
+
+## Justification
+The reference answer is \( \text{atan}(0.38) + 1 \), which evaluates to approximately 1.3631. The student's answer is 1.3649, which is a slight numerical deviation from the reference answer. The relative error between the two values is:
+
+$$
+\frac{1.3649 - 1.3631}{1.3631} \approx 1.32 \times 10^{-3}
+$$
+
+Since the error exceeds the accepted tolerance of \( 1 \times 10^{-3} \), the student's answer is deemed incorrect., even though the approach and reasoning are otherwise correct.
+
+=== report over ===
+
+<math solution>
+**Question**:
+{{Problem}}
+
+**Reference Answer**
+{{Reference Answer}}
+
+**Student Solution**:
+{{Solution}}
+
+</math solution>

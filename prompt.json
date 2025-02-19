@@ -1,0 +1,58 @@
+{
+    "alpaca": {
+        "sys_prompt": "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n",
+        "query_prompt": "### Instruction:\n",
+        "prompt_after_query": "\n\n",
+        "resp_prompt": "### Response:\n",
+        "prompt_before_resp": "",
+        "delim": "\n\n"
+    },
+    "xwin-math": {
+        "sys_prompt": "A chat between a curious user and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the user's questions. ",
+        "query_prompt": "USER: ",
+        "prompt_after_query": "Give your solution in detail. In the end, write your final answer in the format of 'The answer is: <ANSWER>.'. ",
+        "resp_prompt": "ASSISTANT: ",
+        "prompt_before_resp": "",
+        "delim": "\n\n"
+    },
+    "deepseekmath": {
+        "sys_prompt": "",
+        "query_prompt": "User: ",
+        "prompt_after_query": "\nPlease reason step by step, and put your final answer within \\boxed{}.\n\n",
+        "resp_prompt": "Assistant: ",
+        "prompt_before_resp": "",
+        "delim": "<｜end▁of▁sentence｜>"
+    },
+    "deepseekmath-tool": {
+        "sys_prompt": "",
+        "query_prompt": "User: ",
+        "prompt_after_query": "\nPlease integrate natural language reasoning with programs to solve the problem above, and put your final answer within \\boxed{}.\n\n",
+        "resp_prompt": "Assistant: ",
+        "prompt_before_resp": "",
+        "delim": "<｜end▁of▁sentence｜>"
+    },
+    "wizardmath-cot": {
+        "sys_prompt": "Below is an instruction that describes a task. Write a response that appropriately completes the request.\n\n",
+        "query_prompt": "### Instruction:\n",
+        "prompt_after_query": "\n\n",
+        "resp_prompt": "### Response: ",
+        "prompt_before_resp": "Let's think step by step.",
+        "delim": "\n\n"
+    },
+    "raw": {
+        "sys_prompt": "",
+        "query_prompt": "",
+        "prompt_after_query": "",
+        "resp_prompt": "",
+        "prompt_before_resp": "",
+        "delim": ""
+    },
+    "llama3math": {
+        "sys_prompt": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nYou are a helpful agent on solving math problems.<|eot_id|>",
+        "query_prompt": "<|start_header_id|>user<|end_header_id|>\n\n",
+        "prompt_after_query": "<|eot_id|>",
+        "resp_prompt": "<|start_header_id|>assistant<|end_header_id|>\n\n",
+        "prompt_before_resp": "",
+        "delim": "<|eot_id|>"
+    }
+}
