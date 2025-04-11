@@ -5,6 +5,7 @@ import argparse
 from vllm import LLM, SamplingParams
 import torch
 from utils import *
+from transformers import AutoModelForCausalLM, AutoTokenizer
 
 SUB_LIST=[
     "Abstract_algebra",
@@ -30,6 +31,8 @@ def generate(model_path: str,
             dataset_path: str, 
             output_path: str, 
             version: int = 0,
+            max_tokens = 2048,
+            system = "",
             prompt: str = "raw", 
             tensor_parallel_size: int = 1, 
             test_part: Optional[Tuple[int, int]] = None)-> None:
@@ -105,9 +108,9 @@ def generate(model_path: str,
     # Load prompt
     with open("prompt.json", 'r') as f:
         prompt_dict = json.load(f)[prompt]
-    
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
     # TODO: deal with inference prompt
-    test_dataset_list = make_prompt(prompt_dict, test_dataset_list)
+    test_dataset_list = make_prompt_with_template(tokenizer, test_dataset_list, system)
 
     if test_part is not None:
         test_dataset_list = test_dataset_list[test_part[0]:test_part[1]]
@@ -121,11 +124,11 @@ def generate(model_path: str,
               dtype=torch.bfloat16,
               swap_space=32,
               gpu_memory_utilization=0.95,
-              max_model_len=4096)
+              max_model_len=max_tokens)
     stop_tokens = ["<|eot_id|>","</s>", "Question:", "Question", "USER:", "USER", "ASSISTANT:", "ASSISTANT", "Instruction:", "Instruction", "Response:", "Response"]
     sampling_params = SamplingParams(temperature=0, 
                                      top_p=1, 
-                                     max_tokens=2048, 
+                                     max_tokens=max_tokens, 
                                      stop=stop_tokens)
 
     for index_global in range(len(test_dataset_list) // batch_size):
@@ -177,7 +180,8 @@ if __name__ == "__main__":
                         default="raw")
     parser.add_argument('--output_dir', type=str, default="./results/")
     parser.add_argument('--tensor_parallel_size', type=int, default=1)
-
+    parser.add_argument('--system', type=str, help="System Prompt", default="")
+    parser.add_argument('--max_tokens', type=int, default=2048)
     args = parser.parse_args()
     out_dir = os.path.join(args.output_dir, args.model_path.split("/")[-1])
     mkdir(out_dir)
@@ -193,6 +197,8 @@ if __name__ == "__main__":
                          dataset_path=os.path.join("data", sub + ".json"),
                          version=args.version,
                          output_path=out_fn,
+                         max_tokens=args.max_tokens,
+                         system=args.system,
                          prompt=args.prompt,
                          tensor_parallel_size=args.tensor_parallel_size)
             else:
@@ -208,6 +214,8 @@ if __name__ == "__main__":
                      dataset_path=os.path.join("data", args.subject + ".json"),
                      version=args.version,
                      output_path=out_fn,
+                     max_tokens=args.max_tokens,
+                     system=args.system,
                      prompt=args.prompt,
                      tensor_parallel_size=args.tensor_parallel_size)
         else:

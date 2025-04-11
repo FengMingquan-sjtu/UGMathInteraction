@@ -578,7 +578,6 @@ SIMPLE_REPLACE_MAP = {
     ":": "/",  # Ratio like 3:2
 }
 
-
 def make_prompt(prompt_dict, data):
     prompt_prefix_multiple = (
         "The following is an undergraduate-level mathematical problem in {subject}. You need to solve the problem by completing all placeholders [ANS].\n\n"
@@ -626,6 +625,67 @@ def make_prompt(prompt_dict, data):
                     desc = desc.format(options=item['options'][i]) 
             item['prompt'] += prompt_prefix_multiple.format(subject=item['subject'], num_of_answers=len(item['answer']), answer_type_description=desc, problem=item['problem'], ANSWER="{ANSWER}")
         item['prompt'] += prompt_dict['prompt_after_query'] + prompt_dict['resp_prompt'] + prompt_dict['prompt_before_resp']
+    return data
+
+
+def make_prompt_with_template(tokenizer, data, sys_prompt=""):
+    prompt_prefix_multiple = (
+        "The following is an undergraduate-level mathematical problem in {subject}. You need to solve the problem by completing all placeholders [ANS].\n\n"
+        "This problem involves {num_of_answers} placeholders [ANS] to be completed. Their answer types are, in order, {answer_type_description}.\n\n"
+        "Problem:\n{problem}\n\n"
+        'All mathematical formulas and symbols you output should be represented with LaTeX. Please end your response with: "The final answers are \\boxed{ANSWER}", where ANSWER should be the sequence of your final answers, separated by commas.'
+    )
+
+    prompt_prefix_single = (
+        "The following is an undergraduate-level mathematical problem in {subject}. You need to solve the problem by completing all placeholders [ANS].\n\n"
+        "This problem involves only one placeholders [ANS] to be completed. The answer type is {answer_type_description}.\n\n"
+        "Problem:\n{problem}\n\n"
+        'All mathematical formulas and symbols you output should be represented with LaTeX. Please end your response with: "The final answer is \\boxed{ANSWER}", where ANSWER should be your final answer.'
+    )
+
+
+    type2descriptions = {
+        "UOL": 'an unordered list of answers surrounded by parentheses with any answer types, for example, (1, x^2, True), where "unordered list" means changing the order of elements results in the same answer',
+        "OL": 'an ordered list of answers surrounded by parentheses with any answer types, for example, (1, x^2, True), where "ordered list" means changing the order of elements results in different answers',
+        "INT": 'a range inteval',
+        "TF": 'either True or False',
+        "EX": 'an expression',
+        "EQ": 'an equation',
+        "MCS": "one option of a multiple choice question with options {options}",
+        "MCM": "more than one option concatenated without space or commas of a multiple choice question with options {options}, for example: BD",
+        "NV": "a numerical value without units",
+        "OE": "a word, phrase, term or string that satisfies the requirements of the problem"
+    }
+
+    for item in data:
+        #item['prompt'] = prompt_dict['sys_prompt'] + prompt_dict['query_prompt']
+        item['prompt'] = ""
+        if len(item['answer']) == 1:
+            desc = type2descriptions[item['answer_type'][0]]
+            if item['answer_type'][0] in ['MCS', 'MCM']:
+                desc = desc.format(options=item['options'][0])
+            item['prompt'] += prompt_prefix_single.format(subject=item['subject'], answer_type_description=desc, problem=item['problem'], ANSWER="{ANSWER}")
+        else:
+            desc = ""
+            for i, ty in enumerate(item['answer_type']):
+                if i == 0:
+                    desc += type2descriptions[ty] 
+                else:
+                    desc += ", " + type2descriptions[ty]
+                if ty in ['MCS', 'MCM']:
+                    desc = desc.format(options=item['options'][i]) 
+            item['prompt'] += prompt_prefix_multiple.format(subject=item['subject'], num_of_answers=len(item['answer']), answer_type_description=desc, problem=item['problem'], ANSWER="{ANSWER}")
+        #item['prompt'] += prompt_dict['prompt_after_query'] + prompt_dict['resp_prompt'] + prompt_dict['prompt_before_resp']
+        messages = [
+            {"role": "system", "content": sys_prompt},
+            {"role": "user", "content": item['prompt']}
+        ]
+        text = tokenizer.apply_chat_template(
+            messages,
+            tokenize=False,
+            add_generation_prompt=True
+        )
+        item['prompt'] = text
     return data
 
 
