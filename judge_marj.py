@@ -100,7 +100,7 @@ class Judger:
             ans_item = self.clean(ans_item)
 
             # bool
-            if ans_type == "TF":
+            if ans_type == "TF" or ans_type == "OL" or ans_type == "UOL":
                 ans_bool = norm_str2bool(ans_item)
                 if ans_bool is not None:
                     new_ans_list.append(str(ans_bool))
@@ -1082,10 +1082,10 @@ if __name__ == "__main__":
     #aaa = [[]]
     #print(judger.judge(pred, gold, ts, aaa)) 
 
-    gold = ["\\abs(-1)"]
-    pred = "\\boxed{1}"
-    ts = ["NV"]
-    print(judger.judge(pred, gold, ts, [[]]))
+    #gold = ["\\abs(-1)"]
+    #pred = "\\boxed{1}"
+    #ts = ["NV"]
+    #print(judger.judge(pred, gold, ts, [[]]))
     #print(judger.auto_judge(pred, gold))
 
     # test MC with sinlge choice
@@ -1150,11 +1150,11 @@ if __name__ == "__main__":
 
 
     # test OL
-    #gold = ["(3.1415926535898, F)"]
-    #pred = "\\boxed{(pi, No)}"
-    #ts = ["OL"]
-    #aaa = [[]]
-    #print(judger.judge(pred, gold, ts, aaa)) 
+    gold = ["(3.1415926535898, F)"]
+    pred = "\\boxed{(pi, No)}"
+    ts = ["OL"]
+    aaa = [[]]
+    print(judger.judge(pred, gold, ts, aaa)) 
 
     # test set as UOL
     #gold = ["{3.1415926535898, F}"]
