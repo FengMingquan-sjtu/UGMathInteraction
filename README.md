@@ -13,6 +13,7 @@
 </p>
 
 ## 🔥News
+- *2025-05-16*: We have established a partnership with the [AGI-Eval](https://agi-eval.cn/evaluation/detail?id=61) platform.
 - *2025-02-19*: We have released our evaluation codes based on the rule-based method and the hybrid method.
 - *2025-02-07*: We have released the UGMathBench dataset on Huggingface.
 - *2025-01-23*: Our paper is accepted to ICLR 2025.
@@ -26,7 +27,8 @@ The original paper employs a rule-based method to evaluate the answers generated
 ![HeadPicture](./imgs/overview.jpg)
 
 ## 🏆 Leaderboard
-coming soon!
+
+Find latest leaderboard on the [AGI-Eval](https://agi-eval.cn/evaluation/detail?id=61) platform.
 
 ## 🫵🏻 Test your own model
 
