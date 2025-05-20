@@ -28,7 +28,7 @@ The original paper employs a rule-based method to evaluate the answers generated
 
 ## 🏆 Leaderboard
 
-Find latest leaderboard on the [AGI-Eval](https://agi-eval.cn/evaluation/detail?id=61) platform.
+Find the latest leaderboard on the [AGI-Eval](https://agi-eval.cn/evaluation/detail?id=61) platform.
 
 ## 🫵🏻 Test your own model
 
