@@ -18,8 +18,8 @@ EXCLUDE_TYPE = ["UOL", "OL"]
 def initialize_client():
     global client
     httpx_client = httpx.Client(verify=False)
-    os.environ["OPENAI_BASE_URL"] = "http://az.gptplus5.com/v1"
-    os.environ["OPENAI_API_KEY"] = "sk-LUw3WneALWOxFqCo1359DdFc76A94765B20594F09c46Ad25"
+    #os.environ["OPENAI_BASE_URL"] = ""
+    #os.environ["OPENAI_API_KEY"] = ""
 
     client = OpenAI(http_client=httpx_client)
 
