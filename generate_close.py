@@ -65,14 +65,19 @@ def get_gpt_response(prompt, model='gpt-4-0613', max_tokens=2048, stop_tokens=[]
         #result = client.request("POST", "/v1", payload, headers)#.getresponse().read()
         try:
             result = requests.request(method="POST", url=client, headers=headers, json=payload).json()
-        except:
+        except Exception as e:
+            print(f"Request error: {e=}")
+            print(f"Request error: {payload=}")
+            print(f"Request error: {headers=}")
+            print(f"Request error: {client=}")
+            print("sleep 10s and retry")
             sleep(10.0)
-            print("request too fast, sleep 3s.")
             return get_gpt_response(prompt, model)
         try:
-            #print(result['choices'][0]['message']['content'])
             return result['choices'][0]['message']['content']
-        except:
+        except Exception as e:
+            print(f"Error in parsing response: {e=}")
+            print(f"Response: {result=}")
             return None
     except APIStatusError as e:
         if e.status_code in [450, 451]:  # 保时洁检测
@@ -101,8 +106,8 @@ def initialize_client(openai_api_key, openai_base_url):
 class OpenAIPredictor(PredictorBase):
     def __init__(self, model, nproc = 16):
         self.gpt_series = model
-        self.openai_api_key = os.environ["OPENAI_BASE_URL"]
-        self.openai_base_url = os.environ["OPENAI_API_KEY"]
+        self.openai_api_key = os.environ["OPENAI_API_KEY"]
+        self.openai_base_url = os.environ["OPENAI_BASE_URL"]
         self.nproc = nproc
 
     def generate(self, prompts: Union[List[str], str]) -> List[str]:
@@ -235,6 +240,7 @@ def generate(model_path: str,
             index_in_data_list = index_global * batch_size + index_in_curr_batch
             item = test_dataset_list[index_in_data_list]
             item["completion"] = generated_text
+            
 
     
     with open(output_path, 'w') as f:

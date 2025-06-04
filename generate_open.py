@@ -2,8 +2,8 @@ import json
 import os
 from typing import Optional, Tuple
 import argparse
-from vllm import LLM, SamplingParams
-import torch
+#from vllm import LLM, SamplingParams
+#import torch
 from utils import *
 from transformers import AutoModelForCausalLM, AutoTokenizer
 

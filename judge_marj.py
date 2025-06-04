@@ -24,7 +24,7 @@ def initialize_client():
     client = OpenAI(http_client=httpx_client)
 
 class Judger:
-    def __init__(self, strict_extract = False, judge_model="gpt-4o-2024-08-06"):
+    def __init__(self, strict_extract = False, judge_model="gpt-4.1"):
         # TODO: add strict_extract as args in generate.py or evaluate.py
         self.judgment_methods = {
             "UOL": self.judge_unordered_list,
