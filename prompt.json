@@ -23,6 +23,22 @@
         "prompt_before_resp": "",
         "delim": "<｜end▁of▁sentence｜>"
     },
+    "deepseekmath-assist": {
+        "sys_prompt": "You are a helpful assistant that answers math questions. You should follow the user's guidance if it is provided. ",
+        "query_prompt": "Problem and chat history: ",
+        "prompt_after_query": "\nPlease reason step by step, and put your final answer within \\boxed{}.\n\n",
+        "resp_prompt": "Assistant: ",
+        "prompt_before_resp": "",
+        "delim": "<｜end▁of▁sentence｜>"
+    },
+    "deepseekmath-human": {
+        "sys_prompt": "You are a undergraduate student in mathematics, working on a math problem together with an AI assistant. The AI assistant may make mistakes, so you need to guide it to the right direction when necessary. ",
+        "query_prompt": "Problem and chat history: ", 
+        "prompt_after_query": "\nPlease provide a short feedback for the AI assistant. If its answer is incorrect, please give it some hint without giving the correct answer directly. \n\n",
+        "resp_prompt": "Assistant: ",
+        "prompt_before_resp": "",
+        "delim": "<｜end▁of▁sentence｜>"
+    },
     "deepseekmath-tool": {
         "sys_prompt": "",
         "query_prompt": "User: ",
