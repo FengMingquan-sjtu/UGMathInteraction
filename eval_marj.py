@@ -367,10 +367,10 @@ if __name__ == "__main__":
                         type=str,
                         help="The subject to evaluate.",
                         default="all")
-    parser.add_argument('--output_dir', type=str, default="./results/")
+    parser.add_argument('--output_dir', type=str, default="./results/gpt-4.1")
     parser.add_argument('--precision', type=float, default=1e-3)
     args = parser.parse_args()
-    out_dir = os.path.join(args.output_dir, args.model_path.split("/")[-1])
+    out_dir = args.output_dir
 
     if args.subject == "all":
         all_data = []

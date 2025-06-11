@@ -1,6 +1,7 @@
 # Data files
 data/*.json
-*.json
+results/*/*.json
+results/*/*.txt
 *.sh
 
 # Byte-compiled / optimized / DLL files

@@ -40,10 +40,11 @@ def generate(model_path: str,
     with open("prompt.json", 'r') as f:
         prompt_dict = json.load(f)[prompt]
     
-    
-    test_dataset_list = make_prompt(prompt_dict, test_dataset_list)  # load both problem and previous discussion
-    # TODO: rewrite human model prompt. delete standard prompt
-    # TODO: add chat history to prompt for both human and original model
+    # load both problem and previous discussion into the prompt
+    if phase == 0:
+        test_dataset_list = make_prompt_assist(prompt_dict, test_dataset_list)  
+    else:
+        test_dataset_list = make_prompt_human(prompt_dict, test_dataset_list)
 
     if test_part is not None:
         test_dataset_list = test_dataset_list[test_part[0]:test_part[1]]

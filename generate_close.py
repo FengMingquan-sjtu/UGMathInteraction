@@ -52,7 +52,7 @@ def get_gpt_response(prompt, model='gpt-4-0613', max_tokens=2048, stop_tokens=[]
             "stop": stop_tokens,
             "temperature": temperature
         }
-        if 'o1' in model:
+        if 'o1' in model or 'o2' in model or 'o3' in model or 'o4' in model:
             
             payload = {
                 "model": model,

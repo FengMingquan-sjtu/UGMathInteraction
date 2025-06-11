@@ -578,6 +578,22 @@ SIMPLE_REPLACE_MAP = {
     ":": "/",  # Ratio like 3:2
 }
 
+def make_prompt_human(prompt_dict, data):
+    for item in data:
+        item['prompt'] = prompt_dict['sys_prompt'] + prompt_dict['query_prompt']
+        item['prompt'] += f"Problem:\n{item['problem']}\n\n"
+        item['prompt'] += f"Chat history, the user prompt is wrapped by <begin_of_user_response><end_of_user_response>:\n{item['completion']}\n\n"
+        item['prompt'] += prompt_dict['prompt_after_query'] + prompt_dict['resp_prompt'] + prompt_dict['prompt_before_resp']
+    return data
+
+def make_prompt_assist(prompt_dict, data):
+    for item in data:
+        item['prompt'] = prompt_dict['sys_prompt'] + prompt_dict['query_prompt']
+        item['prompt'] += f"Problem:\n{item['problem']}\n\n"
+        item['prompt'] += f"Chat history: the user prompt is wrapped by <begin_of_user_response><end_of_user_response>\n{item['completion']}\n\n"
+        item['prompt'] += prompt_dict['prompt_after_query'] + prompt_dict['resp_prompt'] + prompt_dict['prompt_before_resp']
+    return data
+
 def make_prompt(prompt_dict, data):
     prompt_prefix_multiple = (
         "The following is an undergraduate-level mathematical problem in {subject}. You need to solve the problem by completing all placeholders [ANS].\n\n"
