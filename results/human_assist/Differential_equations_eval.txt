@@ -1,0 +1,29 @@
+Acc for each Version, Subject, and Level combination:
+ version                subject level  accuracy  total  true
+       1 Differential_equations     1  0.000000    1.0   0.0
+       1 Differential_equations     2  0.500000    8.0   4.0
+       1 Differential_equations     3  0.315789   19.0   6.0
+       1 Differential_equations     4  0.375000    8.0   3.0
+       1 Differential_equations     5  0.437500   32.0  14.0
+       2 Differential_equations     1  0.000000    1.0   0.0
+       2 Differential_equations     2  0.500000   10.0   5.0
+       2 Differential_equations     3  0.333333   21.0   7.0
+       2 Differential_equations     4  0.500000   12.0   6.0
+       2 Differential_equations     5  0.342857   35.0  12.0
+       3 Differential_equations     1  0.000000    1.0   0.0
+       3 Differential_equations     2  0.444444    9.0   4.0
+       3 Differential_equations     3  0.523810   21.0  11.0
+       3 Differential_equations     4  0.555556    9.0   5.0
+       3 Differential_equations     5  0.371429   35.0  13.0
+Acc for each Version, Subject combination:
+ version                subject  accuracy  total  true
+       1 Differential_equations  0.397059   68.0  27.0
+       2 Differential_equations  0.379747   79.0  30.0
+       3 Differential_equations  0.440000   75.0  33.0
+Acc for each Version:
+ version  accuracy  total  true
+       1  0.397059   68.0  27.0
+       2  0.379747   79.0  30.0
+       3  0.440000   75.0  33.0
+
+aacc:  0.4054		eacc:  0.5588	cacc:  0.9559

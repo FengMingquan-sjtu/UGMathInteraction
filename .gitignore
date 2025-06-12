@@ -1,8 +1,6 @@
 # Data files
 data/*.json
-results/*/*.json
-results/*/*.txt
-*.sh
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,0 +1,1 @@
+python filter_wrong.py --input_file results/gpt-4.1/Differential_equations_eval.json --output_file results/human_assist/Differential_equations.json 
