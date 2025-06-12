@@ -150,62 +150,69 @@ def generate(model_path: str,
         tensor_parallel_size: The number of GPUs you want to use. 
         test_part: The range of data to be processed. [low, high]. If left None, will process all the data. 
     """
+    if not os.path.exists(output_path):
+        # Load test data
+        with open(dataset_path, 'r') as f:
+            test_dataset_list = json.load(f)
+        
+        exists = []
 
-    # Load test data
-    with open(dataset_path, 'r') as f:
-        test_dataset_list = json.load(f)
-    
-    exists = []
-
-    # deal with version
-    if version == -1:
-        test_dataset_list_new = []
-        for i in range(VERSION_NUM):
-            if not os.path.exists(output_path.split(".js")[0] + f"_v{i+1}.json"):
-                for item in test_dataset_list:
-                    ddd = item.copy()
-                    ddd['problem'] = item['problem_v'+ str(i+1)] 
-                    ddd['answer'] = item['answer_v' + str(i+1)]
-                    ddd['version'] = i+1
-                    ddd['answer_type'] = item['answer_type_v'+str(i+1)]
-                    ddd['options'] = item['options_v'+str(i+1)]
-                    test_dataset_list_new.append(ddd)
-                print(f"VERSION: {i+1} LOADED!")
-            else:
-                with open(output_path.split(".js")[0] + f"_v{i+1}.json") as f:
-                    exists += json.load(f)
-                print(f"VERSION: {i+1} already exists!")
-        for item in test_dataset_list_new:
+        # deal with version
+        if version == -1:
+            test_dataset_list_new = []
             for i in range(VERSION_NUM):
-                try:
+                if not os.path.exists(output_path.split(".js")[0] + f"_v{i+1}.json"):
+                    for item in test_dataset_list:
+                        ddd = item.copy()
+                        ddd['problem'] = item['problem_v'+ str(i+1)] 
+                        ddd['answer'] = item['answer_v' + str(i+1)]
+                        ddd['version'] = i+1
+                        ddd['answer_type'] = item['answer_type_v'+str(i+1)]
+                        ddd['options'] = item['options_v'+str(i+1)]
+                        test_dataset_list_new.append(ddd)
+                    print(f"VERSION: {i+1} LOADED!")
+                else:
+                    with open(output_path.split(".js")[0] + f"_v{i+1}.json") as f:
+                        exists += json.load(f)
+                    print(f"VERSION: {i+1} already exists!")
+            for item in test_dataset_list_new:
+                for i in range(VERSION_NUM):
+                    try:
+                        del item['problem_v'+str(i+1)]
+                        del item['answer_v'+str(i+1)]
+                        del item['answer_type_v'+str(i+1)]
+                        del item['options_v'+str(i+1)]
+                    except:
+                        pass
+            print(f"ALL VERSIONS LOADED!")
+            test_dataset_list = test_dataset_list_new
+            if len(test_dataset_list) == 0:
+                print(f"ALL VERSIONS ALREADY EVALUATED, WRITING TO {output_path}!")
+                with open(output_path, 'w') as f:
+                    json.dump(exists, f, indent=4)
+        else:
+            for i in range(VERSION_NUM):
+                if i+1 == version:
+                    for item in test_dataset_list:
+                        item['problem'] = item['problem_v'+ str(i+1)] 
+                        item['answer'] = item['answer_v' + str(i+1)]
+                        item['version'] = i+1 # add version
+                        item['answer_type'] = item['answer_type_v'+str(i+1)]
+                        item['options'] = item['options_v'+str(i+1)]
+            for item in test_dataset_list:
+                for i in range(VERSION_NUM):
                     del item['problem_v'+str(i+1)]
                     del item['answer_v'+str(i+1)]
                     del item['answer_type_v'+str(i+1)]
                     del item['options_v'+str(i+1)]
-                except:
-                    pass
-        print(f"ALL VERSIONS LOADED!")
-        test_dataset_list = test_dataset_list_new
-        if len(test_dataset_list) == 0:
-            print(f"ALL VERSIONS ALREADY EVALUATED, WRITING TO {output_path}!")
-            with open(output_path, 'w') as f:
-                json.dump(exists, f, indent=4)
-    else:
-        for i in range(VERSION_NUM):
-            if i+1 == version:
-                for item in test_dataset_list:
-                    item['problem'] = item['problem_v'+ str(i+1)] 
-                    item['answer'] = item['answer_v' + str(i+1)]
-                    item['version'] = i+1 # add version
-                    item['answer_type'] = item['answer_type_v'+str(i+1)]
-                    item['options'] = item['options_v'+str(i+1)]
-        for item in test_dataset_list:
-            for i in range(VERSION_NUM):
-                del item['problem_v'+str(i+1)]
-                del item['answer_v'+str(i+1)]
-                del item['answer_type_v'+str(i+1)]
-                del item['options_v'+str(i+1)]
-        print(f"VERSION: {version} LOADED!")
+            print(f"VERSION: {version} LOADED!")
+    else:# reuse the existing file
+        with open(output_path, 'r') as f:
+            test_dataset_list = json.load(f)
+        if version == -1:
+            test_dataset_list = [item for item in test_dataset_list if item['version'] in range(1, VERSION_NUM+1)]
+        else:
+            test_dataset_list = [item for item in test_dataset_list if item['version'] == version]
 
     # Load prompt
     with open("prompt.json", 'r') as f:
@@ -300,12 +307,13 @@ if __name__ == "__main__":
             out_fn = os.path.join(out_dir, args.subject + "_v" + str(args.version) + ".json") 
         if not os.path.exists(out_fn):
             print(f"Start evaluating {args.model.split('/')[-1]} on {args.subject}---version {args.version}!")
-            generate(model_path=args.model,
-                     dataset_path=os.path.join("data", args.subject + ".json"),
-                     version=args.version,
-                     output_path=out_fn,
-                     prompt=args.prompt,
-                     nproc=args.nproc)
         else:
-            print(f"{args.model.split('/')[-1]} on {args.subject}  already exist!")
+            print(f"{args.model.split('/')[-1]} on {args.subject}  already exist, Reuse it!")
+        generate(model_path=args.model,
+                    dataset_path=os.path.join("data", args.subject + ".json"),
+                    version=args.version,
+                    output_path=out_fn,
+                    prompt=args.prompt,
+                    nproc=args.nproc)
+        
 
